@@ -21,7 +21,7 @@ app.use(bodyParser.json()) ;
 
 // Connect  to MongoDB  
 
-// Connect to MongoDB using Environment Variable (Secrets)
+// Connect to MongoDB using Environment Variable 
 
 const mongoURI = process.env.MONGO_URI;
 mongoose.connect(mongoURI)
