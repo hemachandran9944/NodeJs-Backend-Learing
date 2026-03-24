@@ -1,0 +1,37 @@
+
+
+name: Deploy Node.js to AWS
+
+on:
+  push:
+    branches: [ main ] 
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: SSH and Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ubuntu
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            # Project root folder-path
+            cd ~/NodeJs-Backend-Learing || git clone https://github.com/${{ github.repository }} ~/NodeJs-Backend-Learing
+            
+            # Backend folder-path
+            cd ~/NodeJs-Backend-Learing/blog/backend
+            
+            # Latest code pull install 
+            git pull origin main
+            npm install --production
+            
+            # PM2  restart 
+            sudo npm install -g pm2
+            pm2 delete backend || true
+            pm2 start server.js --name "backend"
+            pm2 save
