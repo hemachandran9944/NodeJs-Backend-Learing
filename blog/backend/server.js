@@ -1,10 +1,12 @@
 // DataBase Config 
 
 const express =  require('express');
+require('dotenv').config();
 const mongoose = require('mongoose'); 
 const bodyParser = require('body-parser');
 const postRoutes = require('./routes/posts');
 const cors = require('cors');
+
 
 // express App Call Function
 
