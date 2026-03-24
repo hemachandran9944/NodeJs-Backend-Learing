@@ -20,18 +20,19 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_KEY }}
           script: |
-            # Project root folder-path
-            cd ~/NodeJs-Backend-Learing || git clone https://github.com/${{ github.repository }} ~/NodeJs-Backend-Learing
+            # Project root folder-kku ponga. Folder illana clone pannum.
+            if [ ! -d "NodeJs-Backend-Learing" ]; then
+              git clone https://github.com/${{ github.repository }} NodeJs-Backend-Learing
+            fi
             
-            # Backend folder-path
-            cd ~/NodeJs-Backend-Learing/blog/backend
+            cd NodeJs-Backend-Learing/blog/backend
             
-            # Latest code pull install 
+            # Git pull panna munnadi permissions fix panna (Sila neram error varum)
+            git config --global --add safe.directory /home/ubuntu/NodeJs-Backend-Learing
+            
             git pull origin main
             npm install --production
             
-            # PM2  restart 
-            sudo npm install -g pm2
+            # PM2 restart
             pm2 delete backend || true
             pm2 start server.js --name "backend"
-            pm2 save
