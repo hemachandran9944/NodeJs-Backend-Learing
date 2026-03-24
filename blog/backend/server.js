@@ -21,8 +21,8 @@ app.use(bodyParser.json()) ;
 
 // Connect  to MongoDB  
 
-mongoose.connect('mongodb://localhost:27017/hema')
- .then(() => console.log('MongoDB econnect !'))
+mongoose.connect(process.env.MONGO_URI)
+ .then(() => console.log('MongoDB Connected to Hema_DB!"'))
  .catch(err => console.log('DB Could Not Connect', err));
 
 
