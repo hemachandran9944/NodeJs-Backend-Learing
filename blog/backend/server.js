@@ -33,3 +33,7 @@ app.use('/api/posts', postRoutes)
 
 
 app.listen(PORT, () => console.log (`Server Runing on Port ${PORT}`))
+
+
+
+//http://localhost:8000/api/posts
