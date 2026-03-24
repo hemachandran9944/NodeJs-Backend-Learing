@@ -36,5 +36,5 @@ jobs:
              echo "MONGO_URI=${{ secrets.MONGO_URI }}" > .env
             
             # PM2 restart
-            pm2 delete backend || true
+            pm2 delete backend-app || true
             pm2 start server.js --name "backend-app"
