@@ -21,12 +21,13 @@ app.use(bodyParser.json()) ;
 
 // Connect  to MongoDB  
 
+// Connect to MongoDB using Environment Variable (Secrets)
 
-const mongoURI = 'mongodb://hemachandranhema8754_db_user:F09oZcrRvHjg9hvj@cluster0-shard-00-00.62bc372.mongodb.net:27017,cluster0-shard-00-01.62bc372.mongodb.net:27017,cluster0-shard-00-02.62bc372.mongodb.net:27017/hema-db?ssl=true&replicaSet=atlas-62bc37-shard-0&authSource=admin&retryWrites=true&w=majority'
+const mongoURI = process.env.MONGO_URI;
 mongoose.connect(mongoURI)
- .then(() => console.log(' MongoDB Connected to Hema_DB!'))
+ .then(() => console.log('MongoDB Connected to Hema_DB!'))
  .catch(err => {
-    console.log('DB Connect  Error :');
+    console.log('DB Connect Error :');
     console.error(err);
  });
 
