@@ -1,5 +1,3 @@
-
-
 name: Deploy Node.js to AWS
 
 on:
@@ -20,21 +18,28 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_KEY }}
           script: |
-            # Project root folder-kku ponga. Folder illana clone pannum.
+            # 1. Project folder-ku ponga (illana clone pannunga)
             if [ ! -d "NodeJs-Backend-Learing" ]; then
               git clone https://github.com/${{ github.repository }} NodeJs-Backend-Learing
             fi
             
-            cd NodeJs-Backend-Learing/blog/backend
+            cd ~/NodeJs-Backend-Learing
             
-            # Git pull panna munnadi permissions fix panna (Sila neram error varum)
+            # 2. Git permissions fix and pull latest code
             git config --global --add safe.directory /home/ubuntu/NodeJs-Backend-Learing
-            
             git pull origin main
+            
+            # 3. Sariyana backend folder-ku ponga
+            cd blog/backend
+            
+            # 4. Dependencies install pannunga
             npm install --production
 
-             echo "MONGO_URI=${{ secrets.MONGO_URI }}" > .env
+            # 5. Environment file-ah sariyana folder-la create pannunga
+            echo "MONGO_URI=${{ secrets.MONGO_URI }}" > .env
+            echo "PORT=8000" >> .env
             
-            # PM2 restart
+            # 6. PM2 restart (App eppovum live-la iruka)
             pm2 delete backend-app || true
             pm2 start server.js --name "backend-app"
+            pm2 save
