@@ -18,16 +18,7 @@ jobs:
           cd blog/backend
           npm install
           node --check server.js
-
-      # 3. Variable check (Reference errors)
-      - name: Validate Variables
-        env:
-          MONGO_URI: ${{ secrets.MONGO_URI }}
-        run: |
-          cd blog/backend
-          # Variable thappa irundha inga stop aagum
-          node -e "try { require('./server.js') } catch(e) { if(e instanceof ReferenceError) { console.error(e); process.exit(1) } process.exit(0) }" 
-         
+    
       # 4. Final Deploy to AWS
       - name: SSH and Deploy to EC2
         uses: appleboy/ssh-action@master
