@@ -18,7 +18,7 @@ jobs:
           cd blog/backend
           npm install
           node --check server.js
-          node -e "require('./server.js')" || true
+          node -e "require('./server.js')" 
 
           
 
@@ -31,7 +31,7 @@ jobs:
           timeout 15s node server.js || [ $? -eq 124 ]  
 
       # 3. Check Code --------------> Succes This Code 
-      
+
       - name: SSH and Deploy to EC2
         uses: appleboy/ssh-action@master
         with:
