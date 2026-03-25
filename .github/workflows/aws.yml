@@ -8,18 +8,18 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      # 1. Latest v6 Version use panrom
+      # 1. Latest v6 version use 
       - name: Checkout Code
         uses: actions/checkout@v6
 
-      # 2. AWS-ku anupurathuku munnadi GitHub-laye error check panrom
-      - name: Validate Code Syntax
+      # 2. Check Code 
+      - name: Validate Code And Syntax Error
         run: |
           cd blog/backend
           npm install
           node --check server.js
 
-      # 3. Syntax sariya irundha mattum AWS-ku anupuvom
+      # 3. Check Code --------------> Succes This Code 
       - name: SSH and Deploy to EC2
         uses: appleboy/ssh-action@master
         with:
@@ -38,9 +38,11 @@ jobs:
             cd blog/backend
             npm install --production
 
+            # Env setup
             echo "MONGO_URI=${{ secrets.MONGO_URI }}" > .env
             echo "PORT=8000" >> .env
             
+            # App restart
             pm2 delete backend-app || true
             pm2 start server.js --name "backend-app"
             pm2 save
