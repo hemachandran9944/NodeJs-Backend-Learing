@@ -8,9 +8,18 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      # 1. Latest v6 Version use panrom
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
 
+      # 2. AWS-ku anupurathuku munnadi GitHub-laye error check panrom
+      - name: Validate Code Syntax
+        run: |
+          cd blog/backend
+          npm install
+          node --check server.js
+
+      # 3. Syntax sariya irundha mattum AWS-ku anupuvom
       - name: SSH and Deploy to EC2
         uses: appleboy/ssh-action@master
         with:
@@ -18,28 +27,20 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_KEY }}
           script: |
-            # 1. Project folder-ku ponga (illana clone pannunga)
             if [ ! -d "NodeJs-Backend-Learing" ]; then
               git clone https://github.com/${{ github.repository }} NodeJs-Backend-Learing
             fi
             
             cd ~/NodeJs-Backend-Learing
-            
-            # 2. Git permissions fix and pull latest code
             git config --global --add safe.directory /home/ubuntu/NodeJs-Backend-Learing
             git pull origin main
             
-            # 3. Sariyana backend folder-ku ponga
             cd blog/backend
-            
-            # 4. Dependencies install pannunga
             npm install --production
 
-            # 5. Environment file-ah sariyana folder-la create pannunga
             echo "MONGO_URI=${{ secrets.MONGO_URI }}" > .env
             echo "PORT=8000" >> .env
             
-            # 6. PM2 restart (App eppovum live-la iruka)
             pm2 delete backend-app || true
             pm2 start server.js --name "backend-app"
             pm2 save
